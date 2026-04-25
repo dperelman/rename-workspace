@@ -10,17 +10,10 @@ set -o errexit   # A sub-process/shell returning non-zero is fatal
 
 function init() {
   readonly script_path="${BASH_SOURCE[0]:-$0}"
-  readonly script_dir="$(dirname "$(readlink -f "$script_path")")"
   readonly script_name="$(basename "$script_path")"
-  
-  # Get the names of all the workspaces
-  ws_names=()
-  while read name; do
-    ws_names+=("$name")
-  done < <(xfconf-query -c xfwm4 -p /general/workspace_names | tail -n +3)
 
   # Get current workspace details from wmctrl
-  current_ws_idx=$(wmctrl -d | grep '*' | cut -d " " -f1)
+  current_ws_idx=$(wmctrl -d | grep -F '*' | cut -d " " -f1)
 
   verbose=false
 
@@ -31,7 +24,7 @@ function init() {
 usage() {
   cat <<EOF
 
-Rename the current Xfce workspace.
+Rename the current workspace.
 
 It takes no arguments, instead it opens a dialog box.
 
@@ -39,6 +32,7 @@ Requirements:
 
 1) wmctrl (tested with 1.07)
 2) zenity (tested with 3.6.0)
+3) rename-desktop (https://git.aweirdimagination.net/perelman/rename-desktop)
 
 ${bld}USAGE${off}
   $script_name
@@ -111,17 +105,16 @@ then
     See: https://www.freedesktop.org/wiki/Software/wmctrl/" 127
 fi
 
+if ! command -v rename-desktop &> /dev/null || ! command -v get-desktop-name &> /dev/null
+then
+  die "rename-desktop could not be found\n\
+    $script_name requires rename-desktop\n\
+    See: https://git.aweirdimagination.net/perelman/rename-desktop" 127
+fi
+
 # Get new workspace name via zenity
 new_name=$(zenity --entry --title="Rename workspace" \
-    --text="Rename workspace $((current_ws_idx + 1))" --entry-text="${ws_names[$current_ws_idx]}")
+    --text="Rename workspace $((current_ws_idx + 1))" --entry-text="$(get-desktop-name)")
 
 # Overwrite current workspace name
-xfconf_cmd="xfconf-query -c xfwm4 -p /general/workspace_names"
-for i in "${!ws_names[@]}"; do
-    if [[ $i == "$current_ws_idx" && $new_name ]]; then
-        xfconf_cmd+=" -s \"$new_name\""
-    else
-        xfconf_cmd+=" -s \"${ws_names[$i]}\""
-    fi
-done
-eval "$xfconf_cmd"
+rename-desktop "$new_name"
