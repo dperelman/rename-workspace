@@ -16,7 +16,7 @@ For Xubuntu, you can do:
 $ sudo apt install wmctrl zenity
 ```
 
-Uses my [`rename-desktop`](https://git.aweirdimagination.net/perelman/rename-desktop) script to avoid the dependency on Xfce of the upstream version.
+Uses my https://git.aweirdimagination.net/perelman/rename-desktop script to avoid the dependency on Xfce of the upstream version.
 
 ## Installation
 
