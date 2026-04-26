@@ -8,8 +8,9 @@ set -o errexit   # A sub-process/shell returning non-zero is fatal
 
 # IFS=$'\n\t'  # Only split strings on newlines & tabs, not spaces.
 
-# Put pipx packages in path.
-PATH=$PATH:~/.local/bin
+py_helper() {
+  pipx run --spec https://git.aweirdimagination.net/perelman/rename-desktop/archive/main.zip "$@"
+}
 
 function init() {
   readonly script_path="${BASH_SOURCE[0]:-$0}"
@@ -108,16 +109,9 @@ then
     See: https://www.freedesktop.org/wiki/Software/wmctrl/" 127
 fi
 
-if ! command -v rename-desktop &> /dev/null || ! command -v get-desktop-name &> /dev/null
-then
-  die "rename-desktop could not be found\n\
-    $script_name requires rename-desktop\n\
-    See: https://git.aweirdimagination.net/perelman/rename-desktop" 127
-fi
-
 # Get new workspace name via zenity
 new_name=$(zenity --entry --title="Rename workspace" \
-    --text="Rename workspace $((current_ws_idx + 1))" --entry-text="$(get-desktop-name)")
+    --text="Rename workspace $((current_ws_idx + 1))" --entry-text="$(py_helper get-desktop-name)")
 
 # Overwrite current workspace name
-rename-desktop "$new_name"
+py_helper rename-desktop "$new_name"

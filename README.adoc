@@ -21,7 +21,6 @@ Uses my https://git.aweirdimagination.net/perelman/rename-desktop script to avoi
 ## Installation
 
 ```shell
-$ pipx install https://git.aweirdimagination.net/perelman/rename-desktop/archive/main.zip
 $ sudo cp rename-xfce-workspaces.sh /usr/bin/rename-xfce-workspaces
 ```
 
