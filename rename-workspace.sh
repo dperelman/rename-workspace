@@ -8,6 +8,9 @@ set -o errexit   # A sub-process/shell returning non-zero is fatal
 
 # IFS=$'\n\t'  # Only split strings on newlines & tabs, not spaces.
 
+# Put pipx packages in path.
+PATH=$PATH:~/.local/bin
+
 function init() {
   readonly script_path="${BASH_SOURCE[0]:-$0}"
   readonly script_name="$(basename "$script_path")"
