@@ -1,6 +1,6 @@
-# rename-xfce-workspace
+# rename-workspace
 
-Rename the current Xfce workspace.
+Rename the current workspace.
 
 It takes no arguments, instead it opens a dialog box.
 
@@ -16,12 +16,15 @@ For Xubuntu, you can do:
 $ sudo apt install wmctrl zenity
 ```
 
+Uses my [`rename-desktop`](https://git.aweirdimagination.net/perelman/rename-desktop) script to avoid the dependency on Xfce of the upstream version.
+
 ## Installation
 
 ```shell
+$ pipx install https://git.aweirdimagination.net/perelman/rename-desktop/archive/main.zip
 $ sudo cp rename-xfce-workspaces.sh /usr/bin/rename-xfce-workspaces
 ```
 
 ## Usage
 
-`rename-xfce-workspaces`
+`rename-workspace.sh`
