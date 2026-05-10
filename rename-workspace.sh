@@ -13,6 +13,7 @@ PATH=$PATH:~/.local/bin
 
 function init() {
   readonly script_path="${BASH_SOURCE[0]:-$0}"
+  readonly script_dir="$(dirname "$script_path")"
   readonly script_name="$(basename "$script_path")"
 
   # Get current workspace details from wmctrl
@@ -112,6 +113,7 @@ if ! command -v rename-desktop &> /dev/null || ! command -v get-desktop-name &> 
 then
   die "rename-desktop could not be found\n\
     $script_name requires rename-desktop\n\
+    Run pipx install $script_dir/rename-desktop
     See: https://git.aweirdimagination.net/perelman/rename-desktop" 127
 fi
 

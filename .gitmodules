@@ -1,0 +1,3 @@
+[submodule "rename-desktop"]
+	path = rename-desktop
+	url = https://git.aweirdimagination.net/perelman/rename-desktop.git
